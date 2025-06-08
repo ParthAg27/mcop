@@ -1,0 +1,35 @@
+{
+  "name": "mightyminer-discord-bot",
+  "version": "1.0.0",
+  "description": "Discord bot for controlling MightyMiner with slash commands and screenshot functionality",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "minecraft",
+    "mightyminer",
+    "mining",
+    "automation"
+  ],
+  "author": "MightyMiner Team",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "screenshot-desktop": "^1.15.0",
+    "sharp": "^0.33.4",
+    "dotenv": "^16.4.5",
+    "fs-extra": "^11.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
+

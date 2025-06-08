@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  mightyminer:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: mightyminer-bot
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - BOT_USERNAME=${BOT_USERNAME}
+      - BOT_PASSWORD=${BOT_PASSWORD}
+      - SERVER_HOST=${SERVER_HOST:-hypixel.net}
+      - SERVER_PORT=${SERVER_PORT:-25565}
+      - DISCORD_TOKEN=${DISCORD_TOKEN}
+      - DISCORD_CHANNEL_ID=${DISCORD_CHANNEL_ID}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - ENABLE_WEB_INTERFACE=${ENABLE_WEB_INTERFACE:-false}
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./config:/app/config
+    ports:
+      - "3000:3000"  # Web interface (optional)
+    networks:
+      - mightyminer-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    healthcheck:
+      test: ["CMD", "node", "healthcheck.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Optional: Redis for data persistence
+  redis:
+    image: redis:7-alpine
+    container_name: mightyminer-redis
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    networks:
+      - mightyminer-network
+    command: redis-server --appendonly yes
+
+volumes:
+  redis-data:
+    driver: local
+
+networks:
+  mightyminer-network:
+    driver: bridge
+
